@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div id="app">
+        <input type="text" v-model="valtest">
+        <button v-on:click="ck1">提交</button>
+        <br>
+        <span>{{valtest}}</span>
+    </div>
+
+    <script src="vue.js"></script>
+    <script src="jquery-3.6.0.js"></script>
+    <script src="axios.min.js"></script>
+    <script>
+        var app = new Vue({
+            el : "#app",
+            data : {
+                valtest : "",
+            },
+            methods : {
+                ck1 : function(){
+                    // get请求
+                    // axios.get("axiostest.php?mode="+this.valtest).then(function(response){
+                    //     alert(response.data);
+                    // },function(err){});
+
+                    // post请求
+                    let params=new URLSearchParams();
+                    params.append("mode",this.valtest);
+                    params.append("mode1","123");
+                    params.append("mode2","456");
+
+                    // axios({method:"post",url:"axiostest.php",data:params})
+                    // .then(function(response){
+                    //     console.log(response.data);
+                    // },function(err){
+                    //     console.log(err);
+                    // })
+
+                    axios.post("axiostest.php",params)
+                    .then(function(response){
+                        console.log(response.data);
+                    },function(err){
+                        console.log(err);
+                    })
+
+                },
+            },
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .background{
+            height: 540px;
+            width: 405px;
+            background-color: skyblue;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            overflow: hidden;
+        }
+
+        .bird{
+            width: 50px;
+            /* height: 25px; */
+            background-image: url(pic.gif);
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: absolute;
+            left: 10%;
+            top: 10%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .start {
+            width: 300px;
+            height: 80px;
+            background-color: orange;
+            position: absolute;
+            left: 50%;
+            top: 40%;
+            transform: translate(-50%,-50%);
+            border: 2px solid #000;
+            border-radius: 6px;
+            font-size: 50px;
+            line-height: 80px;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .fen {
+            width: 300px;
+            height: 80px;
+            background-color: orange;
+            position: absolute;
+            left: 50%;
+            top: 60%;
+            transform: translate(-50%,-50%);
+            border: 2px solid #000;
+            border-radius: 6px;
+            font-size: 50px;
+            line-height: 80px;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .guanbox {
+            height: 540px;
+            width: 10000px;
+            /* background-color: green; */
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            z-index: 0;
+        }
+
+        .guan {
+            width: 100px;
+            height: 540px;
+            background-color: pink;
+            position: absolute;
+            top: 0px;
+            left: 500px;
+            /* border: 2px solid #000; */
+        }
+
+        /* .guanbox>.nextguan {
+            background-color: orange;
+        } */
+
+        .guanbox>.current {
+            background-color: red;
+        }
+
+        .guan>div {
+            position: relative;
+            height: 250px;
+            width: 100%;
+            position: absolute;
+            left: 0px;
+            top: 200px;
+            background-color: skyblue;
+        }
+
+        .guanpic1 {
+            position: absolute;
+            width: 100%;
+            height: 540px;
+            background-image: url(guanpic.png);
+            background-size: contain;
+            background-repeat: no-repeat;
+            /* background-position: 0px 250px; */
+            top: 250px;
+        }
+
+        .guanpic2 {
+            position: absolute;
+            width: 100%;
+            height: 540px;
+            background-image: url(guanpic.png);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: 0px 0px;
+            transform: rotateX(180deg) translateY(540px);
+            
+        }
+
+        .score {
+            width: 100px;
+            height: 50px;
+            background-color: orange;
+            font-size: 40px;
+            line-height: 50px;
+            text-align: center;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .zhanshiban {
+            width: 360px;
+            height: 500px;
+            background-color: pink;
+            border: 2px solid #000;
+            border-radius: 6px;
+            position: absolute;
+            z-index: 100;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+
+        .zhanshiban>div {
+            width: 360px;
+            height: 50px;
+            font-size: 30px;
+        }
+
+        .zhanshiban>div>div {
+            float: left;
+            height: 50px;
+            margin-left: 20px;
+        }
+
+        .zhanshiban>div>div:nth-child(1) {
+            width: 60px;
+        }
+
+        .zhanshiban>div>div:nth-child(2) {
+            width: 120px;
+        }
+
+        .zhanshiban>div>div:nth-child(3) {
+            width: 120px;
+        }
+        .tijiaobox{
+            position: absolute;
+            z-index: 101;
+        }
+
+    </style>
+    <script src="jquery-3.6.0.js"></script>
+    <script>
+        //分数记录
+        var score = 0;
+
+        $(function(){
+
+            
+
+            //动态调整小鸟大小
+            $(".bird").css("height",$(".bird").width()*3/4);
+
+            $(".start").click(function(e){
+                app.tijiaoshow = true;
+                var deadflag = 0;
+                $(this).hide();
+                $("#paiming").hide();
+                e.stopPropagation();
+
+                //重置分数
+                score = 0;
+                $(".score").html(score);
+
+                var guanv = 0.2; //水管移动速度
+                var guanX = 0; //水管位置
+                var guannum = 0;
+                var guanchushi = 500;
+                var guanjiange = 300;
+                function makeguan(){
+                    $(".guanbox").append("<div class='guan' id="+ guannum +"></div>");
+                    $(".guan").eq(guannum).css("left",guanchushi+guanjiange*guannum);
+                    //通过空间设定
+                    $(".guan").eq(guannum).append("<div></div>");
+                    $(".guan").eq(guannum).children().css("top",Math.random()*($(".background").height()-$(".guan>div").height()));
+                    //放入水管素材
+                    $(".guan").eq(guannum).children().append("<div class='guanpic1'></div>");
+                    $(".guan").eq(guannum).children().append("<div class='guanpic2'></div>");
+                    guannum++;
+                }
+                makeguan();
+                $(".guan").eq(0).addClass("nextguan");
+                makeguan();
+
+
+                //小鸟自由落体部分
+                //速度单位v是每1/60秒移动像素
+                var a = 0.02;
+                var v = 0; //0.2
+                var DeltaT = 1000/60;
+                var DeltaY = v*DeltaT;
+                var positionY = $(".bird").position().top;
+                var flyTimer = requestAnimationFrame(flashframe);
+
+                function flashframe (){
+                    v += a;
+                    DeltaY = v*DeltaT;
+                    positionY += DeltaY;
+                    // console.log(positionY);
+                    $(".bird").css("top",positionY);
+
+                    //水管移动
+                    guanX = guanX - guanv*DeltaT;
+                    $(".guanbox").css("left",guanX);
+                    //水管生成
+                    var birdright = $(".bird").position().left+$(".bird").width();
+                    var nextguanleft = $(".nextguan").position().left + $(".guanbox").position().left;
+                    //小鸟进入当前水管判定
+                    if(birdright >= nextguanleft){
+                        $(".nextguan").removeClass("nextguan").addClass("current").next().addClass("nextguan");
+                        makeguan();
+                    }
+                    if($(".current").length >= 1) {
+                        var birdleft = $(".bird").position().left;
+                        var currentguanright = $(".current").position().left +
+                            $(".current").width() + $(".guanbox").position().left;
+                        
+                        //撞管死亡
+                        if (positionY + $(".bird").height()/2 >=
+                            $(".current").children().position().top + $(".current").children().height() || 
+                            positionY - $(".bird").height()/2 <= 
+                            $(".current").children().position().top) {
+                                dead();
+                        }
+
+                        //小鸟离开水管，同时分数+1
+                        if(birdleft >= currentguanright){
+                            $(".current").removeClass("current");
+                            $(".score").html(++score);
+                        }
+                    }
+                    
+                    //撞地面\顶死亡判断
+                    if (positionY + $(".bird").height()/2 >= $(".background").height() || 
+                        positionY - $(".bird").height()/2 <= 0) {
+                            dead();
+                    }
+
+                    //死亡重置函数
+                    function dead() {
+                        cancelAnimationFrame(flyTimer);
+                        v = 0;
+                        $(".bird").css("top","10%");
+                        $(".guanbox").html("");
+                        $(".start").show();
+                        $("#paiming").show();
+                        deadflag = 1;
+                    }
+
+                    if (deadflag == 0) {
+                        flyTimer = requestAnimationFrame(flashframe);
+                    }
+                    
+
+                }
+
+                $(".background").click(function(){
+                    v = -0.5;
+                })
+
+
+            })
+        })
+    </script>
+</head>
+<body>
+    <div class="background">
+        <div class="start">开始</div>
+        <div id="paiming">
+            <div class="fen" v-on:click="chafen" v-show="!tijiaoshow">全球排名</div>
+            <div class="fen" v-on:click="inputshow" v-show="tijiaoshow">上传分数</div>
+            <div v-show="ishow" class="tijiaobox">
+                <input type="text" v-model="player">
+                <button v-on:click="chuanfen">提交</button>
+                <button v-on:click="quxiao">提交</button>
+            </div>
+            <div class="zhanshiban" v-show="zhanshishow" v-on:click="close">
+                <div v-for="(item,index) in fenarr">
+                    <div>{{index+1}}</div>
+                    <div>{{item.name}}</div>
+                    <div>{{item.score}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="bird"></div>
+        <div class="guanbox">
+            <!-- <div class="guan"></div> -->
+        </div>
+        <div class="score">0</div>
+    </div>
+
+    <script src="vue.js"></script>
+    <script src="axios.min.js"></script>
+    <script>
+
+        // var score = 2222;
+
+        var app = new Vue({
+            el: "#paiming",
+            data: {
+                one:"",
+                zhanshishow: false,
+                tijiaoshow: false,
+                fenarr :[],
+                ishow : false,
+                player : "test",
+            },
+            methods: {
+                chafen:function(){
+                    this.zhanshishow = true;
+                    this.one = "";
+                    // var data= {"mode":"load"};
+                    var data = new FormData();
+                    data.append("mode","load");
+                    $that = this;
+                    axios({
+                        url:"paiming.php",
+                        method:"post",
+                        data: data,
+                    }).then(function(respones){
+                        // for(var i=0;i<respones.data.length;i++){
+                        //     $that.one += respones.data[i].name + "：" + respones.data[i].score + "<br>";
+                        // }
+                        $that.fenarr = respones.data;
+                        console.log($that.fenarr);
+                    })
+                },
+                close:function(){
+                    this.zhanshishow = false;
+                },
+                chuanfen:function(){
+                    var data = new FormData();
+                    data.append("mode","up");
+                    data.append("player",this.player);
+                    data.append("score",score);
+                    $that = this;
+                    axios({
+                        url:"paiming.php",
+                        method:"post",
+                        data: data,
+                    }).then(function(respones){
+                        alert(respones.data);
+                        $that.ishow =false;
+                        $that.tijiaoshow =false;
+                    })
+                },
+                inputshow:function(){
+                    this.ishow = true;
+                },
+                quxiao:function(){
+                    this.ishow = false;
+                }
+            }
+        })
+
+
+    </script>
+</body>
+</html>

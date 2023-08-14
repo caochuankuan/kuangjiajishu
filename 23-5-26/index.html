@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #aa>div {
+            width: 150px;
+            height: 150px;
+            font-size: 150px;
+            color:greenyellow;
+            transform: rotate(-45deg);
+            background-color:bisque;
+            border: 1px solid greenyellow;
+            box-shadow: 2px 2px aqua;
+            border-radius: 20px;
+            text-align: center;
+            line-height: 120px;
+            margin: 20px;
+        }
+        .red {
+            background-color: red!important;
+            margin-top: 70px!important;
+        }
+        .green {
+            background-color: green!important;
+            margin-top: 70px!important;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="aa">
+        <input type="button" value="切换" v-on:click="ck1">
+        <!-- v-show隐藏元素，v-if删除元素 -->
+        <div v-if="isshow">:</div>
+        <input type="button" value="+1" v-on:click="ck2">
+        <div v-text="num" v-show="num<=5">0</div>
+        <div v-bind:class="color" v-on:click="ck3"></div>
+    </div>
+
+    <script src="vue.js"></script>
+    <script>
+
+        var app = new Vue({
+            el : "#aa",
+            data : {
+                isshow : false,
+                num : 0,
+                color : "red",
+            },
+            methods : {
+                ck1 : function(){
+                    this.isshow = !this.isshow;
+                },
+                ck2 : function(){
+                    this.num++;
+                },
+                ck3 : function(){
+                    this.color = "green";
+                }
+            },
+        });
+
+    </script>
+
+    <div id="zz">
+        <img v-bind:src="picarry[picindex]" alt=""><br>
+        <input type="button" value="left" v-on:click="left" v-show="picindex>0">
+        <input type="button" value="right" v-on:click="right" v-show="picindex<picarry.length-1">
+    </div>
+
+    <script>
+        var app2 = new Vue({
+            el : "#zz",
+            data : {
+                picarry : [
+                "images/lunbo1.jpg",
+                "images/lunbo2.jpg",
+                "images/lunbo3.jpg",
+                "images/lunbo4.jpg",
+                "images/lunbo5.jpg",
+                "images/lunbo6.jpg",
+                ],
+                picindex : 0,
+            },
+            methods : {
+                left : function(){
+                    this.picindex--;
+                },
+                right : function(){
+                    this.picindex++;
+                },
+            }
+        })
+    </script>
+
+</body>
+</html>

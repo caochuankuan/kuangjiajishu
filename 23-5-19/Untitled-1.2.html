@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .background{
+            height: 540px;
+            width: 405px;
+            background-color: skyblue;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+
+        .bird{
+            width: 68px;
+            height: 51px;
+            background-image: url(pic.gif);
+            position: absolute;
+            left: 10%;
+            top: 10%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .start {
+            width: 200px;
+            height: 80px;
+            background-color: orange;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            border: 2px solid #000;
+            border-radius: 6px;
+            font-size: 60px;
+            line-height: 80px;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .guanbox {
+            height: 540px;
+            width: 10000px;
+            /* background-color: green; */
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            z-index: 0;
+        }
+
+        .guan {
+            width: 100px;
+            height: 540px;
+            background-color: pink;
+            position: absolute;
+            top: 0px;
+            left: 500px;
+            border: 2px solid #000;
+        }
+
+        /* .guanbox>.nextguan {
+            background-color: orange;
+        } */
+
+        .guanbox>.current {
+            background-color: red;
+        }
+
+        .guan>div {
+            height: 250px;
+            width: 100%;
+            position: absolute;
+            left: 0px;
+            top: 200px;
+            background-color: skyblue;
+        }
+    </style>
+    <script src="jquery-3.6.0.js"></script>
+    <script>
+        $(function(){
+
+            $(".start").click(function(e){
+                $(this).hide();
+                e.stopPropagation();
+
+                var guanv = 0.2; //水管移动速度
+                var guanX = 0; //水管位置
+                var guannum = 0;
+                var guanchushi = 500;
+                var guanjiange = 300;
+                function makeguan(){
+                    $(".guanbox").append("<div class='guan' id="+ guannum +"></div>");
+                    $(".guan").eq(guannum).css("left",guanchushi+guanjiange*guannum);
+                    //通过空间设定
+                    $(".guan").eq(guannum).append("<div></div>");
+                    $(".guan").eq(guannum).children().css("top",Math.random()*(540-250));
+                    guannum++;
+                }
+                makeguan();
+                $(".guan").eq(0).addClass("nextguan");
+                makeguan();
+
+
+                //小鸟自由落体部分
+                //速度单位v是每1/60秒移动像素
+                var a = 0.02;
+                var v = 0; //0.2
+                var DeltaT = 1000/60;
+                var DeltaY = v*DeltaT;
+                var positionY = $(".bird").position().top;
+                flyTimer = setInterval(function(){
+                    v += a;
+                    DeltaY = v*DeltaT;
+                    positionY += DeltaY;
+                    // console.log(positionY);
+                    $(".bird").css("top",positionY);
+
+                    //水管移动
+                    guanX = guanX - guanv*DeltaT;
+                    $(".guanbox").css("left",guanX);
+                    //水管生成
+                    var birdright = $(".bird").position().left+$(".bird").width();
+                    var nextguanleft = $(".nextguan").position().left + $(".guanbox").position().left;
+                    //小鸟进入当前水管判定
+                    if(birdright >= nextguanleft){
+                        $(".nextguan").removeClass("nextguan").addClass("current").next().addClass("nextguan");
+                        makeguan();
+                    }
+                    if($(".current").length >= 1) {
+                        var birdleft = $(".bird").position().left;
+                        var currentguanright = $(".current").position().left +
+                            $(".current").width() + $(".guanbox").position().left;
+                        if(birdleft >= currentguanright){
+                            $(".current").removeClass("current");
+                        }
+
+                        //撞管死亡
+                        if (positionY + $(".bird").height()/2 >=
+                            $(".current").children().position().top + $(".current").children().height() || 
+                            positionY - $(".bird").height()/2 <= 
+                            $(".current").children().position().top) {
+
+                            clearInterval(flyTimer);
+                            v = 0;
+                            $(".bird").css("top","10%");
+                            $(".guanbox").html("");
+                            $(".start").show();
+                        }
+                    }
+                    
+                    //撞地面\顶死亡判断
+                    if (positionY + $(".bird").height()/2 >= $(".background").height() || 
+                        positionY - $(".bird").height()/2 <= 0) {
+                        clearInterval(flyTimer);
+                        v = 0;
+                        $(".bird").css("top","10%");
+                        $(".guanbox").html("");
+                        $(".start").show();
+                    }
+                },DeltaT);
+
+                $(".background").click(function(){
+                    v = -0.5;
+                })
+
+
+            })
+
+            
+            
+        })
+    </script>
+</head>
+<body>
+    <div class="background">
+        <div class="start">开始</div>
+        <div class="bird"></div>
+        <div class="guanbox">
+            <!-- <div class="guan"></div> -->
+        </div>
+    </div>
+</body>
+</html>

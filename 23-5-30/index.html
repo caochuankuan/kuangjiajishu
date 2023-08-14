@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div id="aa">
+        <div :style="st1">aaaaaa</div>
+        <div v-for="(data,i) in arr1" :class="'a'+(i+1)">{{data}}</div>
+        <div v-for="(data,name) in obj1">{{name + data}}</div>
+        <input type="button" value="+1" v-on:click="fn1('编程',100)">
+        <input type="text" v-on:keydown.enter="fn2">
+    </div>
+
+    <script src="vue.js"></script>
+    <script>
+        var app =new Vue({
+            el : "#aa",
+            data : {
+                st1 : {
+                    backgroundColor : "green",
+                    color : "white",
+                },
+                arr1 : ["aaa","bbb","ccc"],
+                obj1 : {
+                    "语文":99,
+                    "数学":88,
+                    "英语":77,
+                }
+            },
+            methods : {
+                fn1 : function(ke,score){
+                    this.$set(this.obj1,ke,score);
+                    this.arr1.push("ddd");
+                },
+                fn2 : function(){
+                    alert("1+2");
+                }
+            },
+        });
+    </script>
+
+</body>
+</html>

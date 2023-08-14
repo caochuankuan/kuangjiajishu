@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>游戏小案例</title>
+    <style>
+        .bg {
+            width: 600px;
+            height: 800px;
+            background-color: skyblue;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .bird {
+            width: 68px;
+            height: 50px;
+            background-image: url(./pic.gif);
+            position: absolute;
+            top: 10%;
+            left: 10%;
+        }
+
+        .start {
+            width: 200px;
+            height: 80px;
+            background-color: orange;
+            border: 4px solid black;
+            border-radius: 15px;
+            box-shadow: 0 0 20px black;
+            font-size: 50px;
+            text-align: center;
+            line-height: 80px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+    <script src="./jquery-3.6.0.js"></script>
+    <script>
+        $(function () {
+            $('.start').click((event) => {
+                // 阻止冒泡事件
+                event.stopPropagation();
+                // 按钮隐藏
+                $('.start').hide();
+
+                // 小鸟的高
+                let bird_height = $('.bird').height();
+                // bg的高
+                let bg_height = $('.bg').height();
+                // 速度
+                let v = 200;
+                // 加速度
+                let a = 1;
+                // 帧生成的时间
+                let deltaT = 1000 / 60;
+                // 每一帧移动的距离
+                let deltaY = v * deltaT;
+                // 小鸟的初始位置 ， 以及总的位置
+                let positionY = $('.bird').position().top;
+                let flytimer = setInterval(() => {
+                    // 由于加速度 v 就会越来越快
+                    v += a * deltaT;
+                    // 除以1000 转化为秒 deltaY每一帧移动的距离
+                    deltaY = v * deltaT / 1000;
+                    // 把每一帧移动的距离加到总的距离上
+                    positionY += deltaY;
+                    console.log(positionY);
+                    // 改变距离
+                    $('.bird').css('top', positionY);
+
+                    // 死亡条件
+                    if (positionY + bird_height >= bg_height || positionY < 0) {
+                        // 清除定时器
+                        clearInterval(flytimer);
+                        // 小鸟复位
+                        positionY = bg_height * 0.1;
+                        $('.bird').css('top', positionY);
+                        // 速度 归0
+                        v = 0;
+                        // 按钮显示
+                        $('.start').show();
+                    }
+                }, deltaT);
+
+                $('.bg').click(() => {
+                    // 速度减去
+                    v = -800;
+                })
+            })
+
+        })
+    </script>
+</head>
+
+<body>
+    <div class="bg">
+        <div class="start">开始</div>
+        <div class="bird"></div>
+    </div>
+</body>
+
+</html>

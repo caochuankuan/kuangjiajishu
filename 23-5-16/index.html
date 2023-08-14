@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico">
+    <title>飞翔的小鸟</title>
+    <style>
+        *{
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        /* 背景 */
+        .background{
+            height: 540px;
+            width: 405px;
+            background-color: skyblue;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            overflow: hidden; 
+        }
+
+        /* 小鸟 */
+        .bird{
+            width: 50px;
+            /* height: 51px; */
+            background-image: url(pic.gif);
+            position: absolute;
+            background-size: contain;
+            background-repeat: no-repeat;
+            left: 10%;
+            top: 10%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        /* 开始按钮 */
+        .start,.control,.p {
+            width: 200px;
+            height: 80px;
+            background-color: orange;
+            position: absolute;
+            left: 50%;
+            top: 30%;
+            transform: translate(-50%,-30%);
+            border-radius: 6px;
+            font-size: 40px;
+            line-height: 80px;
+            text-align: center;
+            z-index: 2;
+        }
+        .control{
+            font-size: 40px;
+            top: 15%;
+        }
+
+        .p{
+            position: absolute;
+            z-index: 3;
+            width: 100px;
+            height: 30px;
+            line-height: 30px;
+            font-size: 15px;
+            top: 95%;
+        }
+
+        /* 最高分 */
+        .max{
+            position: absolute;
+            top: 90%;
+            left: 50%;
+            transform: translate(-50%,-90%);
+        }
+
+        /* 背景音乐 */
+        .music {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%,-60%);
+            
+        }
+
+        /* 管子盒子 */
+        .guanbox {
+            height: 540px;
+            width: 10000px;
+            /* background-color: green; */
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            z-index: 0;
+        }
+
+        /* 管 */
+        .guan {
+            width: 100px;
+            height: 540px;
+            background-color: pink;
+            position: absolute;
+            top: 0px;
+            left: 500px;
+            /* border: 2px solid #000; */
+        }
+
+        /* .guanbox>.nextguan {
+            background-color: orange;
+        } */
+
+        /* .guanbox>.current {
+            background-color: red;
+        } */
+
+        /* 管的中部用于空心的盒子，小鸟可以穿过的位置 */
+        .guan>div {
+            position: relative;
+            height: 250px;
+            width: 100%;
+            position: absolute;
+            left: 0px;
+            top: 200px;
+            background-color: skyblue;
+        }
+
+        /* 下边的管 */
+        .guanpic1{
+            position: absolute;
+            width: 100%;
+            height: 540px;
+            background-image: url(guanpic.png);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: 0px 250px;
+        }
+
+        /* 上边的管 */
+        .guanpic2{
+            position: absolute;
+            width: 100%;
+            height: 540px;
+            background-image: url(guanpic.png);
+            background-size: contain;
+            background-repeat: no-repeat;
+            transform: rotate(-180deg);
+            top:-540px;
+        }
+
+        /* 分数 */
+        .score{
+            width: 100%;
+            height: 50px;
+            /* background-color: chartreuse; */
+            font-size: 40px;
+            line-height: 50px;
+            text-align: center;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+    </style>
+    <script src="jquery-3.6.0.js"></script>
+    <script>
+        $(function(){
+
+            // 初始化分数
+            var score = 0;
+            // 初始化最高分
+            var max = 0;
+            $(".musict").hide();
+
+            // 设定小鸟的宽度
+            $(".bird").css("height",$(".bird").width()*3/4);
+
+            // 隐藏暂停按钮
+            $(".p").hide();
+
+            $(".start").click(function(e){
+                // 隐藏开始按钮，音乐控件，最高分
+                $(this).hide();
+                $(".music").hide();
+                $(".max").hide();
+                $(".p").show();
+                // 禁止事件冒泡
+                e.stopPropagation();
+                // 背景音乐
+                $(".musict")[0].play();
+                // 背景音乐开关
+                $(".control").click(function(){
+                    if($(".musict")[0].paused){
+                        $(".musict")[0].play();
+                        $(".control").html("音乐：开");
+                    }else{
+                        $(".musict")[0].pause();
+                        $(".control").html("音乐：关");
+                    }
+                })
+
+                // 死亡分数重置
+                score = 0;
+                $(".score").html(score);
+
+                var guanv = 0.2; //水管移动速度
+                var guanX = 0; //水管位置
+                var guannum = 0;
+                var guanchushi = 500;
+                var guanjiange = 300;
+                function makeguan(){
+                    $(".guanbox").append("<div class='guan' id="+ guannum +"></div>");
+                    $(".guan").eq(guannum).css("left",guanchushi+guanjiange*guannum);
+                    //通过空间设定
+                    $(".guan").eq(guannum).append("<div></div>");
+                    $(".guan").eq(guannum).children().css("top",Math.random()*($(".background").height()- $(".guan>div").height()));
+                    // 水管
+                    $(".guan").eq(guannum).children().append("<div class='guanpic1'></div>");
+                    $(".guan").eq(guannum).children().append("<div class='guanpic2'></div>");
+                    guannum++;
+                }
+                makeguan();
+                $(".guan").eq(0).addClass("nextguan");
+                makeguan();
+
+
+                //小鸟自由落体部分
+                //速度单位v是每1/60秒移动像素
+                var a = 0.02;
+                var v = 0; //0.2
+                var DeltaT = 1000/60;
+                var DeltaY = v*DeltaT;
+                var positionY = $(".bird").position().top;
+                flyTimer = setInterval(function(){
+                    v += a;
+                    DeltaY = v*DeltaT;
+                    positionY += DeltaY;
+                    // console.log(positionY);
+                    $(".bird").css("top",positionY);
+
+                    //水管移动
+                    guanX = guanX - guanv*DeltaT;
+                    $(".guanbox").css("left",guanX);
+                    //水管生成
+                    var birdright = $(".bird").position().left+$(".bird").width();
+                    var nextguanleft = $(".nextguan").position().left + $(".guanbox").position().left;
+                    //小鸟进入当前水管判定
+                    if(birdright >= nextguanleft){
+                        $(".nextguan").removeClass("nextguan").addClass("current").next().addClass("nextguan");
+                        makeguan();
+                    }
+                    if($(".current").length >= 1) {
+                        var birdleft = $(".bird").position().left;
+                        var currentguanright = $(".current").position().left +
+                        $(".current").width() + $(".guanbox").position().left;
+                        // 小鸟离开水管，分数
+                        if(birdleft >= currentguanright){
+                            $(".current").removeClass("current");
+                            $(".score").html(++score);
+                        }
+
+                        //撞管死亡
+                        if (positionY + $(".bird").height()/2 >=
+                            $(".current").children().position().top + $(".current").children().height() || 
+                            positionY - $(".bird").height()/2 <= 
+                            $(".current").children().position().top) {
+                                dead();
+                        }
+                    }
+                    
+                    //撞地面\顶死亡判断
+                    if (positionY + $(".bird").height()/2 >= $(".background").height() || 
+                        positionY - $(".bird").height()/2 <= 0) {
+                            dead();
+                    }
+
+                    // 死亡重置函数
+                    function dead(){
+                        clearInterval(flyTimer);
+                        v = 0;
+                        if(score > max){
+                            max = score;
+                        }
+                        $(".max").html("本次游戏最高分:"+max);
+                        $(".bird").css("top","10%");
+                        $(".guanbox").html("");
+                        $(".start").show();
+                        $(".music").show();
+                        $(".max").show();
+                        $(".p").hide();
+                        $(".musict")[0].pause();
+                    }
+
+                },DeltaT);
+
+                $(".background").click(function(){
+                    v = -0.3;
+                })
+
+                // 暂停与继续
+                var tempa;
+                var temp_guanv;
+                var flag = 0;
+                $(".p").click(function(e){
+                    if(flag == 0){
+                        e.stopPropagation();
+                        tempa = a;
+                        temp_guanv = guanv;
+                        a = 0;
+                        v = 0;
+                        guanv = 0;
+                        flag = 1;
+                        $(this).html("继续");
+                    }else if(flag == 1){
+                        $(".background").click(function(){
+                            v = -0.3;
+                        })
+                        a = tempa;
+                        guanv = temp_guanv;
+                        flag = 0;
+                        $(this).html("暂停");
+                    }
+                })
+
+            })
+
+        })
+    </script>
+</head>
+<body>
+    <div class="background">
+        <div class="start">开始</div>
+        <div class="p">暂停</div>
+        <div class="bird"></div>
+        <div class="guanbox">
+            <!-- <div class="guan"></div> -->
+        </div>
+        <div class="score">0</div>
+        <div class="max"></div>
+        <div class="music">
+            <div class="control">音乐：开</div>
+            <audio class="musict" src="music.mp3"  loop controls autoplay preload="metadata"></audio>
+        </div>
+    </div>
+</body>
+</html>

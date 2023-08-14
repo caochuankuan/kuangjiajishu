@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .bg {
+            width: 600px;
+            height: 800px;
+            background-color: skyblue;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+
+        .bird {
+            width: 68px;
+            height: 50px;
+            background-image: url(pic.gif);
+            position: absolute;
+            left: 10%;
+            top: 10%;
+        }
+
+        .start {
+            width: 200px;
+            height: 80px;
+            background-color: orange;
+            border: 4px solid #000;
+            border-radius: 6px;
+            font-size: 50px;
+            line-height: 80px;
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+    </style>
+    <script src="jquery-3.6.0.js"></script>
+    <script>
+        $(function(){
+
+            $(".start").click(function(e){
+                e.stopPropagation();
+                $(this).hide();
+
+                //速度v，位移y，时间t，y=v*t；
+                //当次移动距离deltaY=v*deltaT;
+                //总移动距离positionY=position+deltaY;
+                var v = 0;
+                //加速度a，v=a*t，deltaV=a*daltaT，v = v + deltaV;
+                var a = 1.2;
+                //帧生成时间(毫秒)
+                var deltaT = 1000/60;
+                var deltaY = v*deltaT;
+                var positionY = $(".bird").position().top;
+
+                var flyTimer = setInterval(function(){
+                    v += a*deltaT;
+                    deltaY = v*deltaT/1000;
+                    positionY += deltaY;
+                    console.log(positionY);
+                    $(".bird").css("top",positionY);
+
+                    //撞墙死亡
+                    if (positionY+$(".bird").height() >= $(".bg").height() || positionY < 0){
+                        clearInterval(flyTimer);
+                        positionY = $(".bg").height()*0.1;
+                        $(".bird").css("top",positionY);
+                        v = 0;
+                        $(".start").show();
+                    }
+                },deltaT);
+
+                $(".bg").click(function(){
+                    v = -600;
+                });
+            })
+
+            
+
+        })
+    </script>
+</head>
+<body>
+    <div class="bg">
+        <div class="start">开始</div>
+        <div class="bird"></div>
+    </div>
+</body>
+</html>
