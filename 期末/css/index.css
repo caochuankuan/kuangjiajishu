@@ -1,0 +1,245 @@
+
+body {
+    background-image: url(../images/bg.jpg);
+    background-size: contain;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.centerbox{
+    width: 490px;
+    margin: 20px auto;
+    transform-origin: 0 0;
+}
+
+.logo {
+    width: 320px;
+    height: 100px;
+    background-image: url(../images/logo.png);
+    background-size:contain;
+    margin: 10px auto;
+    margin-top: 40px;
+}
+
+.box {
+    width: 480px;
+    height: 480px;
+    /* background-color: skyblue; */
+    margin: 0px auto;
+    position: relative;
+}
+
+.playbox {
+    width: 480px;
+    height: 480px;
+}
+
+.hang {
+    width: 480px;
+    height: 60px;
+}
+
+.em {
+    width: 60px;
+    height: 60px;
+    float: left;
+}
+
+.card {
+    width: 56px;
+    height: 56px;
+    border-radius: 6px;
+    border: 2px solid #000;
+    text-align: center;
+    line-height: 56px;
+    float: left;
+    background-size: cover;
+    color: rgba(0,0,0,0);
+}
+
+.card:hover {
+    cursor: pointer;
+}
+
+.cardbox {
+    width: 420px;
+    height: 60px;
+    margin: 30px auto;
+    margin-bottom: 20px;
+}
+
+.cardbox>div{
+    float: left;
+    text-align: center;
+    line-height: 56px;
+    background-size: cover;
+}
+
+.cardbox>.nocard{
+    width: 56px;
+    height: 56px;
+    border-radius: 4px;
+    border: 2px solid #777;
+}
+
+.cardbox>.getcard{
+    width: 56px;
+    height: 56px;
+    border-radius: 6px;
+    border: 2px solid #000;
+    color: rgba(0,0,0,0);
+}
+
+.img01 {
+    background-image: url(../images/01cao.png);
+}
+
+.img02 {
+    background-image: url(../images/02shua.png);
+}
+
+.img03 {
+    background-image: url(../images/03qiu.png);
+}
+
+.img04 {
+    background-image: url(../images/04jian.png);
+}
+
+.img05 {
+    background-image: url(../images/05cai.png);
+}
+
+.img06 {
+    background-image: url(../images/06yumi.png);
+}
+
+.img07 {
+    background-image: url(../images/07luobo.png);
+}
+
+.img08 {
+    background-image: url(../images/08cha.png);
+}
+
+.img09 {
+    background-image: url(../images/09kun.png);
+}
+
+.img10 {
+    background-image: url(../images/10tao.png);
+}
+
+.img11 {
+    background-image: url(../images/11nai.png);
+}
+
+.img12 {
+    background-image: url(../images/12mu.png);
+}
+
+.img13 {
+    background-image: url(../images/13huo.png);
+}
+
+.img14 {
+    background-image: url(../images/14qiu.png);
+}
+
+.img15 {
+    background-image: url(../images/15tong.png);
+}
+
+.img16 {
+    background-image: url(../images/16ling.png);
+}
+
+.menu {
+    width: 480px;
+    height: 480px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 100;
+    background-color: orange;
+    border-radius: 6px;
+    border: 2px solid #000;
+    visibility: visible;
+}
+
+.kaishi {
+    width: 400px;
+    height: 80px;
+    border: 2px solid #777;
+    margin: 40px auto;
+    font-size: 50px;
+    text-align: center;
+    line-height: 80px;
+    background-color: skyblue;
+    cursor: pointer;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    font-weight: 700;
+}
+
+.paiming {
+    width: 400px;
+    height: 310px;
+    border: 2px solid #777;
+    margin: 0px auto;
+    font-size: 23px;
+    text-align: center;
+    line-height: 30px;
+    background-color: pink;
+    overflow: hidden;
+}
+
+
+.daojishi,
+.win,
+.loss {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 480px;
+    height: 480px;
+    font-size: 300px;
+    text-align: center;
+    line-height: 480px;
+    transform: translate(-50%,-50%);
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.timer {
+    width: 200px;
+    height: 40px;
+    margin: 0 auto;
+    font-size: 28px;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    background-color: #FFFFCD;
+    border-radius: 4px;
+    border: 2px solid skyblue;
+}
+
+.paiming thead td{
+    color: rgb(1, 74, 1);
+}
+
+.paiming td:nth-child(1) {
+    width: 80px;
+}
+
+.copyright {
+    float: right;
+}
+
+.list>div{
+    float: left;
+}
+
+.upload{
+    display: block;
+}

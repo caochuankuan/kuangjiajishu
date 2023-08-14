@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>喵了个咪</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+    <div class="centerbox">
+
+        <div class="logo"></div>
+
+        <div class="box" >
+            <div class="menu">
+                <div class="kaishi">开始游戏</div>
+                <div class="paiming"  id="paiming" style="text-align: center;">
+                    <td>排 行 榜</td>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>排  名</td>
+                                <td style="width: 75px;text-align: left;overflow: hidden;">玩  家</td>
+                                <td>成 绩(ms)</td>
+                            </tr>
+                        </thead>
+                        <tbody class="paimingt">
+                            <td colspan="3">
+                                <tr class="list" v-for="(item,index) in score">
+                                    <td style="width: 105px;">{{index+1}}</td>
+                                    <td style="width: 180px;height: 30px;overflow: hidden;text-align: left;" width="30px">{{item.name}}</td>
+                                    <td>{{item.score}}</td>
+                                    <br>
+                                </tr>
+                            </td>
+                        </tbody>
+                    </table>
+                    <div class="daojishi">3</div>
+                    <div class="win" v-on:click="win">胜利</div>
+                    <div class="loss">失败</div>
+                </div>
+            </div>
+            <div class="playbox"></div>
+        </div>
+    
+        <div class="cardbox">
+            <div class="nocard"></div>
+            <div class="nocard"></div>
+            <div class="nocard"></div>
+            <div class="nocard"></div>
+            <div class="nocard"></div>
+            <div class="nocard"></div>
+            <div class="nocard"></div>
+        </div>
+
+        <div class="timer"></div>
+        <div class="copyright">v1.0.0 Design by 路人轩<br>二次开发：于逸风</div>
+    </div>
+
+    
+
+    <script src="./js/jquery-3.6.0.js"></script>
+    <script src="./js/vue.js"></script>
+    <script src="./js/axios.min.js"></script>
+
+    <script>
+
+        var jishiqitimer;
+        var jishi = 0;
+        var jishi_temp;
+        var plyerN = 0;
+
+
+        $(".kaishi").click(function(){
+            audio = new Audio('./music/music.mp3');
+            audio.play();
+            plyerN++;
+            makepai ();
+            //显示倒计时
+            $(".daojishi").css({
+                visibility:"visible"
+            })
+            $(".kaishi").css({
+                visibility:"hidden"
+            })
+            $(".paiming").css({
+                visibility:"hidden"
+            })
+
+            var daojishitimer = setInterval(function(){
+                if ($(".daojishi").html() > 1) {
+                    $(".daojishi").html($(".daojishi").html() - 1);
+                } else {
+                    $(".daojishi").html(3);
+                    $(".daojishi").css({
+                        visibility:"hidden"
+                    });
+                    clearInterval(daojishitimer);
+                    //倒计时完，开始游戏
+                    $(".menu").css({
+                        visibility: "hidden",
+                    });
+                    //游戏开始计时
+                    jishiqitimer = setInterval(function(){
+                        jishi++;
+                        $(".timer").html("用时:" + jishi);
+                    },100);
+                }
+            },500)
+        })
+
+        //构建牌发牌函数
+        function makepai () {
+        
+            //生成牌阵
+            var boxwidth = 8;
+            for (var i=0; i<boxwidth ;i++) {
+                $(".playbox").append("<div class='hang' id='hang"+i+"'></div>");
+                for (var j=0; j<boxwidth ;j++) {
+                    // var rannum = Math.ceil(Math.random()*14);
+                    $("#hang"+i).append("<div class='em'></div>");
+                }
+            }
+        
+            //随机牌
+            //真随机有死牌bug
+            // $(".em").each(function(){
+            //     $(this).attr("class","card").html(Math.ceil(Math.random()*14));
+            // });
+            
+            //牌型固定，牌位置随机，生成面牌21*3=63个
+            var maxpai = 63;
+            var mianpai = [];
+            var mianpai3 = [];
+            for (let i = 0; i < maxpai/3; i++) {
+                mianpai.push(i%16);
+            }
+            mianpai3 = mianpai3.concat(mianpai);
+            mianpai3 = mianpai3.concat(mianpai);
+            mianpai3 = mianpai3.concat(mianpai);
+            console.log(mianpai3);
+        
+            for(var i=0;i<maxpai;i++){
+                $(".hang>.em").eq(Math.floor(Math.random()*(maxpai-i))).attr("class","card").html(mianpai3[i]);
+            }
+        
+        
+            //放图片
+            $(".card").each(addpic);
+            //刷新图片的函数
+            function addpic() {
+                switch($(this).html()) {
+                    case "0": $(this).addClass("img01"); break;
+                    case "1": $(this).addClass("img02"); break;
+                    case "2": $(this).addClass("img03"); break;
+                    case "3": $(this).addClass("img04"); break;
+                    case "4": $(this).addClass("img05"); break;
+                    case "5": $(this).addClass("img06"); break;
+                    case "6": $(this).addClass("img07"); break;
+                    case "7": $(this).addClass("img08"); break;
+                    case "8": $(this).addClass("img09"); break;
+                    case "9": $(this).addClass("img10"); break;
+                    case "10": $(this).addClass("img11"); break;
+                    case "11": $(this).addClass("img12"); break;
+                    case "12": $(this).addClass("img13"); break;
+                    case "13": $(this).addClass("img14"); break;
+                    case "14": $(this).addClass("img15"); break;
+                    case "15": $(this).addClass("img16"); break;
+                }
+            }
+        
+            document.onselectstart = function(){
+                return false;
+            }
+        
+            var suzu = [];
+            $(".card").click(function() {
+                console.log($(this).html());
+                //点击的是牌，并且手牌还没填满
+                if (($(this).attr("class") != "em") && ($(".nocard").length > 0)) {
+                
+                    //点击的牌加入数组，遇到没有的牌排后面，遇到已有牌插入到已有牌后面
+                    var insert = suzu.indexOf($(this).html());
+                    console.log("重复牌" + insert);
+                    if (insert >= 0) {
+                        if (suzu[insert] == suzu[insert+1]) {
+                            suzu.splice(insert+2,0,$(this).html());
+                        } else {
+                            suzu.splice(insert+1,0,$(this).html());
+                        }
+                    } else {
+                        suzu.push($(this).html());
+                    }
+                    console.log(suzu);
+                
+                    //手牌区加一张牌，并依据数组刷新手牌区
+                    $(".nocard").eq(0).attr("class","getcard");
+                    $(".getcard").each(function(){
+                        $(this).html(suzu[$(this).index()]);;
+                    });
+                    $(".getcard").attr("class","getcard");
+                    $(".getcard").each(addpic);
+                    //删掉被选的牌
+                    $(this).html("").attr("class","em");
+                
+                    //0.7秒后判断是否要消除同样3张牌，消除后再判断输赢
+                    var xiaochutimer = setTimeout(function(){
+                        for (var i=0; i<5; i++) {
+                            // console.log(suzu[i]);
+                            if (suzu[i] && (suzu[i] == suzu[i+1]) && (suzu[i] == suzu[i+2])) {
+                                console.log("消除"+suzu[i]);
+                                suzu.splice(i,3);
+                                //消除数据3张牌后刷新手牌区
+                                $(".getcard").eq($(".getcard").length-1).attr("class","nocard").html("");
+                                $(".getcard").eq($(".getcard").length-1).attr("class","nocard").html("");
+                                $(".getcard").eq($(".getcard").length-1).attr("class","nocard").html("");
+                                $(".getcard").each(function(){
+                                    $(this).html(suzu[$(this).index()]);
+                                });
+                                //刷新手牌区图片
+                                $(".getcard").attr("class","getcard");
+                                $(".getcard").each(addpic);
+                            }
+                        }
+                    
+                        //判断是否输了
+                        if (suzu.length == 7) {
+                            clearInterval(jishiqitimer);
+                            console.log("输了");
+                            $(".loss").css({
+                                backgroundColor: "rgb(0,0,0)",
+                                borderRadius: "50%",
+                                color: "red",
+                                visibility:"visible",
+                                fontSize: "200px",
+                            })
+                            $(".loss").unbind("click");
+                            $(".loss").animate({
+                                fontSize: "150px",
+                            },1000,function(){
+                                $(".loss").bind("click",function(){
+                                    audio.pause();
+                                    $(".loss").css({
+                                        visibility:"hidden",
+                                        fontSize: "150px",
+                                    });
+                                    $(".playbox").html("");
+                                    $(".cardbox").html("");
+                                    for (let index = 0; index < 7; index++) {
+                                        $(".cardbox").append('<div class="nocard"></div>');
+                                    }
+                                    $(".kaishi").css({
+                                        visibility:"visible"
+                                    })
+                                    $(".paiming").css({
+                                        visibility:"visible"
+                                    })
+                                    $(".menu").css({
+                                        visibility: "visible",
+                                    })
+                                    jishi = 0;
+                                    $(".timer").html("");
+                                })
+                            })
+                        }
+                    
+                        //判断是否赢了,一定要用else，到0是会变成空
+                        console.log("剩余牌数" + $(".card").length);
+                        if ($(".card").length > 0) {
+                        } 
+                        else {
+                            clearInterval(jishiqitimer);
+                            console.log("赢了");
+                            $(".win").css({
+                                backgroundColor: "#fff",
+                                borderRadius: "50%",
+                                border:"4px solid #000",
+                                color: "green",
+                                visibility:"visible",
+                                fontSize: "200px",
+                            });
+                            $(".win").unbind("click");
+                            $(".win").animate({
+                                fontSize: "150px",
+                            },1000,function(){
+                                $(".win").bind("click",function(){
+                                    audio.pause();
+                                    $(".win").css({
+                                        visibility:"hidden",
+                                        fontSize: "150px",
+                                    });
+                                    $(".playbox").html("");
+                                    $(".cardbox").html("");
+                                    for (let index = 0; index < 7; index++) {
+                                        $(".cardbox").append('<div class="nocard"></div>');
+                                    }
+                                    $(".kaishi").css({
+                                        visibility:"visible"
+                                    })
+                                    $(".paiming").css({
+                                        visibility:"visible"
+                                    })
+                                    $(".menu").css({
+                                        visibility: "visible",
+                                    })
+                                    // sessionStorage.setItem("player"+plyerN, jishi);
+                                    // console.log(sessionStorage.getItem("player"+plyerN));
+                                    jishi_temp = jishi;
+                                    jishi = 0;
+                                    $(".timer").html("");
+                                    // if (sessionStorage.getItem("player"+plyerN) != 0) {
+                                    //     $(".paimingt").prepend("<tr><td>"+ "player"+ plyerN +"：</td><td>"+sessionStorage.getItem("player"+plyerN)+"</td></tr>");
+                                    // }
+                                })
+                            })
+                        }
+                    
+                    },700)
+                
+
+                } 
+            })
+        }
+
+        //点击输了的字重新开始
+        // $(".loss").click(function(){
+        //     $(".loss").css({
+        //         visibility:"hidden",
+        //     })
+        //     $(".playbox").html("");
+        //     $(".cardbox").html("");
+        //     for (let index = 0; index < 7; index++) {
+        //         $(".cardbox").append('<div class="nocard"></div>');
+        //     }
+        //     $(".kaishi").css({
+        //         visibility:"visible"
+        //     })
+        //     $(".paiming").css({
+        //         visibility:"visible"
+        //     })
+        //     $(".menu").css({
+        //         visibility: "visible",
+        //     })
+        // })
+        
+    
+    </script>
+
+    <script>
+        var yifeng;
+        var app = new Vue({
+            el : "#paiming",
+            data : {
+                score : [],
+                player : "",
+            },
+            methods : {
+                get_db:function(){
+                    var data = new FormData();
+                    data.append("mode","look")
+                    $that = this;
+                    axios({
+                        url : "paiming.php",
+                        method : "post",
+                        data : data,
+                    }).then(function(respones){
+                        $that.score = respones.data;
+                    });
+                },
+                win: function() {
+                     yifeng = jishi;
+                     this.player = prompt("恭喜你通关，请输入昵称（不能以admin为昵称）以上传成绩：");
+                     if (this.player) {
+                       if (/admin/.test(this.player)) {
+                        alert("昵称不能为admin，已自动将昵称设置为游客")
+                         this.player = "游客";
+                       }
+                     } else if (this.player == "") {
+                        this.player = prompt("你还没输入昵称，请输入昵称以上传成绩，不填则会默认以游客为昵称：");
+                        if(this.player==""){
+                            this.player = "游客";
+                        }
+                        this.tijiao();
+                     } else {
+                       this.player = "游客";
+                       alert("由于你并没有输入昵称，已自动将你的昵称设置为游客");
+                     }
+                     this.tijiao();
+                    },
+
+                tijiao:function(){
+                    if(this.player===""){
+                        return 0;
+                    }
+                    var data = new FormData();
+                    data.append("mode","up");
+                    data.append("player",this.player);
+                    data.append("score",yifeng);
+                    $that = this;
+                    axios({
+                        url:"paiming.php",
+                        method:"post",
+                        data: data,
+                    }).then(function(respones){
+                        // alert(respones.data);
+                    });
+                    this.shuaxin();
+                },
+                shuaxin:function(){
+                    location.reload();
+                },
+            },
+            created:function(){
+                this.get_db();
+            },
+        })
+    </script>
+    
+
+</body>
+</html>
