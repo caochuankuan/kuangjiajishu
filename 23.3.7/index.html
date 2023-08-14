@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=666, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .aa,#bb,p{
+            font-weight: bold;
+        }
+        li.l4{
+            color: blue;
+        }
+        .u1>.l4 {
+            font-size: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="aa">666</div>
+    <span id="bb">888</span>
+    <p class="l4">000</p>
+    <ul class="u1">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li class="l4">4</li>
+        <li>5</li>
+        <li>6</li>
+    </ul>
+    <ul class="u2">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li class="l4">4</li>
+        <li>5</li>
+        <li>6</li>
+    </ul>
+
+    <script src="jquery-3.6.0.js"></script>
+    <script>
+
+        var yifeng = {
+            name : "yifeng",
+            age : 3,
+            hello : function () {
+                alert("hello!");
+            },
+            shouxia : {
+                game : "wangzhe",
+                sleep : "I love sleep!",
+            }
+        }
+        console.log(yifeng.name);
+        //yifeng.hello();
+        console.log(yifeng.shouxia.sleep);
+
+        var chuankuan = new Object();
+        chuankuan.sex = "nan";
+        chuankuan.sayhello = function () {
+            alert("hi!");
+        };
+        console.log(chuankuan.sex);
+        //chuankuan.sayhello();
+
+        $(".aa,#bb,p").css({
+            width : "100px",
+            height : "100px",
+            backgroundColor : "green",
+        });
+        $("div").html("66666666666666666666");
+        $("li.l4").css({
+            backgroundColor : "pink",
+        });
+        $(".u2 .l4").css({
+            fontSize : "50px",
+        })
+
+    </script>
+</body>
+</html>

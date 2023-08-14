@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #aa{
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+        #bb{
+            width: 100px;
+            height: 100px;
+            background-color: orange;
+        }
+    </style>
+    <script src="jquery-3.6.0.js"></script>
+</head>
+<body>
+    <div id="aa"></div>
+    <div id="bb"></div>
+    <script>
+        // var i = 0;
+        var boxaa = document.getElementById("aa");
+        boxaa.onclick = function(){
+            // if(i++%2==0){
+                boxaa.style = "background-color: green";
+        //     }else{
+        //     boxaa.style = "background-color: red";
+        // }
+    }
+
+         $("#bb").click(function(){
+             $("#bb").css({
+                backgroundColor: "blue",
+             });
+         });
+    </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>211曹传宽03</title>
+    <style>
+        .cc{
+            width: 100px;
+            height: 100px;
+            padding: 16px;
+            border: 10px solid blue;
+            background-color: chartreuse;
+            margin: 7px;
+        }
+    </style>
+    <script src="jquery-3.6.0.js"></script>
+    <script>
+        $(function(){
+            for (var i = 0; i < 4; i++) {
+                $("<div>"+i+"</div>").appendTo($(".aa"));
+            }
+
+            $(".aa").click(function(){
+                alert("666666");
+            })
+
+            $(".aa").after($(".aa").clone(false));//false浅克隆，true深克隆
+
+            $(".bb").children("span").remove();
+
+            $(".bb").empty();//等价下面这句：
+            // $(".bb").html();
+
+            console.log($(".cc").css("width"));
+            console.log($(".cc").width());
+            console.log($(".cc").innerWidth());
+            console.log($(".cc").outerWidth());
+            console.log($(".cc").outerWidth(true));
+
+            $(".cc").innerWidth(200);
+
+            console.log($(".cc").offset().left);
+            console.log($(".cc").offset().top);
+            $(".cc").offset({
+                left : 100,
+            });
+
+        })
+    </script>
+</head>
+<body>
+
+    <div class="aa"></div>
+
+    <div class="bb">
+        serggrsggdfd
+        <span>1234</span>
+        <div>11</div>
+        <div>33</div>
+        <div>22</div>
+        <div>44</div>
+    </div>
+
+    <div class="cc" style="color: aqua;"></div>
+
+</body>
+</html>

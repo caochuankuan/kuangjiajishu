@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .lunbo{
+            width: 960px;
+            height: 400px;
+            background-color: orange;
+            overflow: hidden;
+            /* margin: 0 auto; */
+            position: fixed;
+            /* top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%); */
+        }
+
+        .bigbox {
+            width: 6720px;
+            height: 400px;
+            
+        }
+
+        .pic {
+            width: 960px;
+            height: 400px;
+            display: block;
+            float: left;
+        }
+
+        .left,.right {
+            color: #fff;
+            font-size: 30px;
+            width: 40px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .left {
+            position: absolute;
+            left: 0px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .right {
+            position: absolute;
+            right: 0px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .control{
+            width: 200px;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.5);
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 15px;
+        }
+
+        .c{
+            width: 16px;
+            height: 16px;
+            background-color: #fff;
+            border-radius: 10px;
+            float: left;
+            margin-left: 7px;
+            margin-top: 7px;
+        }
+
+    </style>
+    <script src="jquery-3.6.0.js"></script>
+    <script>
+        $(function(){
+            
+            var picnum = 0;
+            var running = 0;
+
+            juzhong();
+            // 居中
+            function juzhong() {
+                $(".lunbo").css({
+                    left: $(window).width()*0.5-$(".lunbo").width()*0.5,
+                    top: $(window).height()*0.5-$(".lunbo").height()*0.5,
+                });
+            }
+
+            // 浏览器窗口大小改变之后居中
+            $(window).resize(juzhong);
+
+            // 利用数组把轮播图和按钮放入bigbox盒子里
+            var picArray = ["lunbo1.jpg","lunbo2.jpg","lunbo3.jpg","lunbo4.jpg","lunbo5.jpg","lunbo6.jpg","lunbo7.jpg"];
+            for(var i=0;i<picArray.length;i++){
+                $(".bigbox").append('<img class="pic" src="images/'+picArray[i]+'"></img>');
+                $(".control").append('<div class="c"></div>');
+            }
+            $(".bigbox").append('<img class="pic" src="images/'+picArray[0]+'"></img>');
+            $(".bigbox").css("width",(picArray.length+1)*960);
+            $(".control").css("width",picArray.length*23+7);
+            $(".c").eq(picnum).css("background-color","orange").siblings().css("background-color","#fff");
+            
+
+            // 点击左右箭头切换轮播图
+            $(".right").click(function(){
+                if (running == 0) {
+                    running = 1;
+                    picnum++;
+                    if(picnum == picArray.length){
+                        $(".c").eq(0).css("background-color","orange").siblings().css("background-color","#fff");
+                    }else{
+                        $(".c").eq(picnum).css("background-color","orange").siblings().css("background-color","#fff");
+                    }
+                    $(".bigbox").animate({
+                        marginLeft : picnum*-960,
+                    },500,function(){
+                        running = 0;
+                        if(picnum == picArray.length) {
+                            picnum = 0;
+                            $(".bigbox").css({
+                                marginLeft : picnum*-960,
+                            });
+                        }
+                    })
+                }
+                
+            })
+
+            $(".left").click(function(){
+                if(running == 0) {
+                    running = 1;
+                    if(picnum == 0) {
+                        picnum = picArray.length;
+                        $(".bigbox").css({
+                            marginLeft : picnum*-960,
+                        });
+                    }
+                    picnum--;
+                    $(".c").eq(picnum).css("background-color","orange").siblings().css("background-color","#fff");
+                    $(".bigbox").animate({
+                        marginLeft : picnum*-960,
+                    },500,function(){
+                        running = 0;
+                    })
+                }
+                
+            })
+
+            // 控制按钮功能
+            $(".c").click(function(){
+                if (running == 0) {
+                    running = 1;
+                    picnum =$(this).index();
+                    $(".bigbox").animate({
+                        marginLeft : picnum*-960,
+                    },500,function(){
+                        running = 0;
+                    });
+                    $(".c").eq(picnum).css("background-color","orange").siblings().css("background-color","#fff");
+                }
+            });
+
+            $(".c").mouseover(function(){
+                if (running == 0) {
+                    running = 1;
+                    picnum =$(this).index();
+                    $(".bigbox").animate({
+                        marginLeft : picnum*-960,
+                    },500,function(){
+                        running = 0;
+                    });
+                    $(".c").eq(picnum).css("background-color","orange").siblings().css("background-color","#fff");
+                }
+            });
+
+            // 自动循环切换轮播图
+            var runtimer = window.setInterval(function(){
+                $(".right").click();
+            },2000);
+
+            // 鼠标在图片上暂停自动播放
+            $(".lunbo").mouseover(function(){
+                window.clearInterval(runtimer);
+            });
+
+            // 鼠标移出图片继续自动播放
+            $(".lunbo").mouseleave(function(){
+                runtimer = window.setInterval(function(){
+                    $(".right").click();
+                },2000);
+            })
+
+
+        });
+    </script>
+</head>
+<body>
+    <div class="lunbo">
+        <div class="bigbox">
+            <!-- <img class="pic" src="images/lunbo1.jpg"></img>
+            <img class="pic" src="images/lunbo2.jpg"></img>
+            <img class="pic" src="images/lunbo3.jpg"></img>
+            <img class="pic" src="images/lunbo4.jpg"></img>
+            <img class="pic" src="images/lunbo5.jpg"></img>
+            <img class="pic" src="images/lunbo6.jpg"></img>
+            <img class="pic" src="images/lunbo1.jpg"></img> -->
+        </div>
+        <div class="left">&lt;</div>
+        <div class="right">&gt;</div>
+        <div class="control">
+            <!-- <div class="c"></div>
+            <div class="c"></div>
+            <div class="c"></div>
+            <div class="c"></div>
+            <div class="c"></div>
+            <div class="c"></div>
+            <div class="c"></div> -->
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>211曹传宽03</title>
+    <script src="jquery-3.6.0.js"></script>
+    <script>
+        $(function(){
+            $("ul>li").eq(6).nextAll().css({//$("ul>li").eq(6)==$("ul>li:eq(从0开始)")。nth-child(从1开始),first,last,even(双数),odd(单)
+                color : "red",
+                fontWeight : "bold",
+            })
+
+            $("ul").children().eq(6).prevAll().css({//$("ul>li")==$("ul").children()
+                color : "pink",
+                fontFamily : "华文彩云",
+            });
+            $("#l9").parent().css({
+                backgroundColor : "yellow",
+            })
+            $(".bb").children().mouseenter(function(){
+                $(this).css({
+                    backgroundColor : "green",
+                    textAligh : "center",
+                });
+                $(this).siblings().css({
+                    backgroundColor : "red",
+                })
+                var num = $(this).html();
+                $(this).parent().next().html(num);
+            })
+        })
+    </script>
+    <style>
+        .b{
+            width: 960px;
+            height: 400px;
+            background-color: pink;
+        }
+        .bb{
+            width: 960px;
+            height: 60px;
+            background-color: orange;
+            text-align: center;
+            line-height: 50px;
+        }
+        .bb>div{
+            width: 116px;
+            height: 56px;
+            background-color: red;
+            border: 2px solid black;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li>111</li>
+        <li>222</li>
+        <li>333</li>
+        <li>444</li>
+        <li>555</li>
+        <li>666</li>
+        <li>777</li>
+        <li>888</li>
+        <li id="l9">999</li>
+    </ul>
+    <div class="b">
+        <div class="bb">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+            <div>7</div>
+            <div>8</div>
+        </div>
+        <div>鼠标放上面盒子</div>
+    </div>
+</body>
+</html>

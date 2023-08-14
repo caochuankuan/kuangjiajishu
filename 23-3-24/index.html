@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>211曹传宽03</title>
+    <script src="jquery-3.6.0.js"></script>
+    <script>
+
+        $(function(){
+            
+            $(".aa").html("这是aa");
+            //html生成1-10盒子
+            for(var i=1;i<=10;i++){
+                $(".bb").html($(".bb").html()+"<div>"+i+"</div>");
+            }
+            //append生成11-20盒子
+            for(var i=11;i<=20;i++){
+                $(".bb").append("<div>"+i+"</div>");
+            }
+
+            // $(".cc").attr("value","ccc");
+            $(".cc").val("default");
+
+            $.each($(".bb").children(),function(i,ele){//不传参也行，下面$(ele)改$(this)
+                console.log(i);
+                console.log(ele);
+                $(ele).css({
+                    backgroundColor : "rgb("+(255-parseInt($(ele).html())*10)+",0,0)",
+                })
+            })
+
+        })
+
+    </script>
+</head>
+<body>
+    
+    <div class="aa"></div>
+    <div class="bb"></div>
+    <input type="text" class="cc">
+
+</body>
+</html>

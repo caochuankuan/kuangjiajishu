@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>211曹传宽03</title>
+    <style>
+        .lunbo{
+            width: 960px;
+            height: 400px;
+            background-color: aqua;
+            position: fixed;
+            /* top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%); */
+        }
+
+        .bigbox{
+            width: 5760px;
+            height: 400px;
+        }
+
+        .pic{
+            width: 960px;
+            height: 400px;
+            display: block;
+            float: left;
+        }
+    </style>
+    <script src="jquery-3.6.0.js"></script>
+    <script>
+        $(function(){
+
+            jvzhong();
+            function jvzhong(){
+                $(".lunbo").css({
+                    left:$(window).width()*0.5-$(".lunbo").width()*0.5,
+                    top:$(window).height()*0.5-$(".lunbo").height()*0.5,
+                });
+            }
+
+            $(window).resize(jvzhong);
+
+            var picnum=0;
+            $(".left").click(function(){
+                picnum--;
+                if(picnum<0){
+                    picnum=5;
+                }
+                console.log(picnum);
+                $(".bigbox").animate({
+                    marginLeft:picnum*-960,
+                },500)
+            })
+
+            $(".right").click(function(){
+                picnum++;
+                if(picnum>5){
+                    picnum=0;
+                }
+                console.log(picnum);
+                $(".bigbox").animate({
+                    marginLeft:picnum*-960,
+                },500)
+            })
+
+            
+        })
+    </script>
+</head>
+<body>
+    <div class="lunbo">
+        <div class="bigbox">
+            <img class="pic" src="images/lunbo1.jpg"></img>
+            <img class="pic" src="images/lunbo2.jpg"></img>
+            <img class="pic" src="images/lunbo3.jpg"></img>
+            <img class="pic" src="images/lunbo4.jpg"></img>
+            <img class="pic" src="images/lunbo5.jpg"></img>
+            <img class="pic" src="images/lunbo6.jpg"></img>
+        </div>
+        <div class="left">left</div>
+        <div class="right">right</div>
+    </div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+</body>
+</html>

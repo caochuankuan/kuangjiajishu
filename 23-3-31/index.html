@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>211曹传宽03</title>
+    <style>
+        a,span{
+            position: relative;
+            z-index: 2;
+        }
+        .aa {
+            width: 100px;
+            height: 100px;
+            background-color: aqua;
+            position: relative;
+            z-index: 1; 
+        }
+    </style>
+    <script src="jquery-3.6.0.js"></script>
+    <script>
+        $(function(){
+            var md=0;
+            var mdX;
+            var mdY;
+            var boxX;
+            var boxY;
+            //移动位置=初始位置+鼠标移动距离
+            //鼠标移动距离=实时鼠标位置+按下时鼠标位置
+            $(".aa").mousedown(function(event){
+                md=1;
+                mdX=event.clientX;
+                mdY=event.clientY;
+                boxX=$(this).offset().left;
+                boxY=$(this).offset().top;
+                console.log($(this).offset());
+            })
+            $(document).mousemove(function(event){
+                if(md==1){
+                    console.log("移动位置："+(boxX+event.clientX-mdX));
+                    $(".aa").offset({
+                        left : boxX+event.clientX-mdX,
+                        top : boxY+event.clientY-mdY,
+                    })
+                }
+            })
+            $(".aa").mouseup(function(event){
+                md=0;
+            })
+
+
+            $(window).keydown(function(e){
+                console.log(e.keyCode);
+            })
+
+            $("a").click(function(e){
+                e.preventDefault();
+            })
+
+            $("span").mousemove(function(e){
+                return false;
+            })
+        })
+    </script>
+</head>
+<body>
+    <a href="111.html">123</a>
+    <span>6666666666666666</span>
+    <div class="aa"></div>
+</body>
+</html>

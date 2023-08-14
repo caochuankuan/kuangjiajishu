@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>211曹传宽03</title>
+    <style>
+        .aa > div {
+            width: 100px;
+            height: 50px;
+            border: 1px solid yellowgreen;
+            background-color: yellow;
+            transition: all 0.5s ease;
+        }
+        .aa > div:hover {
+            width: 200px;
+            background-color: turquoise;
+        }
+        .bb {
+            width: 200px;
+            height: 100px;
+            background-color: yellowgreen;
+        }
+    </style>
+    <script src="jquery-3.6.0.js"></script>
+    <script>
+        $(function(){
+            $(".aa").children().eq(3).css("color","red").prev().css("color","blue").prev().css("color","green");
+
+            // $(".bb").next().click(function(){
+            //     $(this).prev().toggle();
+            // })
+
+            $(".bb").next().click(function(){
+                $(this).prev().hide(1000,"swing",function(){
+                    $(this).show(1000,"swing");
+                });
+            })
+        })
+    </script>
+</head>
+<body>
+    <div class="aa">
+        <div>111</div>
+        <div>222</div>
+        <div>333</div>
+        <div>444</div>
+        <div>555</div>
+        <div>666</div>
+    </div>
+    <br>
+    <div class="bb"></div>
+    <input type="button" value="开关">
+</body>
+</html>

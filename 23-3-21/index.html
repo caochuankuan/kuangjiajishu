@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>211曹传宽03</title>
+    <script src="jquery-3.6.0.js"></script>
+    <script>
+        $(function(){
+            $("#in1").attr("type","number");//prop也行
+            $("#in1").attr("name","num1");
+            $("#in1").attr("value",123);
+            $("#in1").attr("a","aaaa");
+
+            $("#bt1").click(function(){
+                // console.log($("#in1").attr("value"));
+                $("#in1").attr("value",parseInt($("#in1").attr("value"))+1);
+            })
+
+            $(".aa").children().attr("class","hang");
+            $(".aa").children().children().attr("class","lie");
+            $(".hang").css({
+                width:400,
+                height:100,
+                background:"skyblue",
+            });
+            $(".lie").css({
+                width:96,
+                height:96,
+                background:"orange",
+                float:"left",
+                border:"1px solid black",
+                margin:"1px 1px"
+            });
+
+            for(var i=0;i<4;i++){
+                $(".aa").children().eq(i).children().attr("y",i);
+                for(var j=0;j<4;j++){
+                    $(".aa").children().eq(i).children().eq(j).attr("x",j);
+                    //$(".aa").children().eq(i).children().eq(j).html("x="+j);
+                    ////$(".aa").children().eq(j).children().eq(i).attr("y",j);
+                    //$(".aa").children().eq(j).children().eq(i).html("y="+j);
+                    $(".aa").children().eq(i).children().eq(j).html("x="+$(".aa").children().eq(i).children().eq(j).attr("x") + "<br>y="+$(".aa").children().eq(i).children().eq(j).attr("y"));
+                }
+            }
+        })
+    </script>
+</head>
+<body>
+    <input id="in1">
+    <input id="bt1" type="button" value="确定"><br><br><hr><br>
+    <div class="aa">
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</body>
+</html>

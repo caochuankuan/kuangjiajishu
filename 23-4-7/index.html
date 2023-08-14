@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>211曹传宽03</title>
+    <style>
+        .aa{
+            width: 200px;
+            height: 100px;
+            background-color:aquamarine;
+        }
+        .bb{
+            width: 200px;
+            height: 100px;
+            background-color: aqua;
+        }
+        .current{
+            background-color: blueviolet!important;
+        }
+        .cc{
+            width: 200px;
+            height: 100px;
+            background-color: bisque;
+            position: relative;
+        }
+        .ccc{
+            width: 160px;
+            height: 60px;
+            background-color: cadetblue;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+        }
+        .dd{
+            width: 120px;
+        }
+    </style>
+    <script src="jquery-3.6.0.js"></script>
+    <script>
+        $(function(){
+            $(".aa").on({
+                mouseover : function(){
+                    $(this).css("backgroundColor","orange");
+                },
+                click : function(){
+                    $(this).css("backgroundColor","blue");
+                },
+                mouseleave : function(){
+                    $(this).css("backgroundColor","aquamarine");
+                }
+            })
+
+            $(".bb").on("mouseover mouseleave",function(){
+                $(this).toggleClass("current");
+            })
+
+            $(".cc").on("mouseover mouseleave",".ccc",function(){
+                $(this).toggleClass("current");
+            })
+
+            $(".cc").append("<div class='ccc'></div>");
+
+            $(".dd").on("click",send);
+            function send(){
+                $(this).off();
+                var time=5;
+                $(".dd").html(time+"秒后重试");
+                var clock = window.setInterval(function(){
+                    time--;
+                    if(time==0){
+                        $(".dd").html("获取验证码");
+                        window.clearInterval(clock);
+                        $(".dd").on("click",send);
+                    }else{
+                        $(".dd").html(time+"秒后重试");
+                    }
+                },1000)
+            }
+
+        })
+    </script>
+</head>
+<body>
+    <div class="aa"></div>
+    <br>
+    <div class="bb"></div>
+    <br>
+    <div class="cc"></div>
+    <br>
+    <button class="dd">获取验证码</button>
+</body>
+</html>
